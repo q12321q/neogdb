@@ -1,0 +1,44 @@
+# Init gdb script when starting a neovim gdb session
+set confirm off
+set pagination off
+
+define hook-stop
+  # neovim_backtrace
+  # neovim_threads
+end
+
+###########
+# neovim_backtrace
+###########
+define neovim_backtrace
+  set logging off
+  set logging file /tmp/gdb.backtrace
+  set logging overwrite on
+  set logging redirect on
+  set logging on
+  backtrace
+  set logging off
+  echo neovim_backtrace done\n
+end
+document neovim_backtrace
+neovim_backtrace
+Silently write the current back trace to /tmp/gdb.backtrace
+end
+
+###########
+# neovim_threads
+###########
+define neovim_threads
+  set logging off
+  set logging file /tmp/gdb.threads
+  set logging overwrite on
+  set logging redirect on
+  set logging on
+  info threads
+  set logging off
+  echo neovim_threads done\n
+end
+document neovim_threads
+neovim_threads
+Silently write the current list of threads to /tmp/gdb.threads
+end
