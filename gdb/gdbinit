@@ -42,3 +42,21 @@ document neovim_threads
 neovim_threads
 Silently write the current list of threads to /tmp/gdb.threads
 end
+
+###########
+# neovim_breakpoints
+###########
+define neovim_breakpoints
+  set logging off
+  set logging file /tmp/gdb.breakpoints
+  set logging overwrite on
+  set logging redirect on
+  set logging on
+  info breakpoints
+  set logging off
+  echo neovim_breakpoints done\n
+end
+document neovim_breakpoints
+neovim_threads
+Silently write the current list of breakpoints to /tmp/gdb.breakpoints
+end

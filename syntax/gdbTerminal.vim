@@ -1,8 +1,4 @@
-" $Id: gdbTerminal.vim,v 0.1 2016/09/17 16:10:00 $
 " Vim syntax file
-" Language: gdb in terminal
-" Maintainer: q12321q <q12321q@gmail.com>
-" Last Change: $Date: 2016/09/17 16:10:00 $
 
 if version < 600
   syntax clear
