@@ -205,7 +205,11 @@ endfunction
 
 
 function s:GdbPaused.neovim_breakpoints(...)
-  call g:reswin#Shell('cat ' . s:gdb_breakpoints_qf, {'onComplete': function('<SID>neogdb_breakpoints_init')})
+  call g:reswin#Shell('cat ' . s:gdb_breakpoints_qf, {
+    \   'keepFocus': v:false,
+    \   'preservePosition': v:true,
+    \   'onCreate': function('<SID>neogdb_breakpoints_init')
+    \ })
 endfunction
 
 
