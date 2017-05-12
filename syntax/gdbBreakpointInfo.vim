@@ -13,7 +13,9 @@ syn match GdbTerminalNumber /\v\dl+/ contained
 syn match GdbBreakpointInfoHexa /\v0x[0-9a-zA-Z]+/ contained
 "
 " syn match GdbBreakpointInfoLine /\v^#\d+ +(0x[0-9a-zA-Z]+ in)? [^ ]+/ contains=GdbTerminalFrameNumber,GdbTerminalFrameDummy,GdbTerminalFrameFunction
-syn match GdbBreakpointInfoLineNumber /\v^\d+(\.\d+)?/ contained
+syn match GdbBreakpointInfoLineNumber /\v^\d+(\.\d+)?/
+syn match GdbBreakpointInfoLineEnable /\v\sy\s/
+syn match GdbBreakpointInfoLineDisable /\v\sn\s/
 
 
 if !exists("did_gdbBreakpointInfo_syntax_inits")
@@ -21,6 +23,9 @@ if !exists("did_gdbBreakpointInfo_syntax_inits")
   hi link GdbBreakpointInfoHeader Special
   hi link GdbBreakpointInfoLineNumber Number
   hi link GdbBreakpointInfoHexa Comment
+
+  hi link GdbBreakpointInfoLineEnable Title
+  hi link GdbBreakpointInfoLineDisable WarningMsg
 
   hi link GdbTerminalString String
   hi link GdbTerminalFilePositionNumber Number

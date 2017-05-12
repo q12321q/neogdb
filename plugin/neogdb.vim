@@ -44,13 +44,13 @@ let s:GdbPaused = vimexpect#State([
       \ ])
 
 
-function s:GdbPaused.continue(...)
+function! s:GdbPaused.continue(...)
   call self._parser.switch(s:GdbRunning)
   call self.update_current_line_sign(0)
 endfunction
 
 
-function s:GdbPaused.jump(file, line, ...)
+function!  s:GdbPaused.jump(file, line, ...)
 
   let l:callback = {}
   let l:callback.args = copy(a:)
@@ -72,7 +72,7 @@ function s:GdbPaused.jump(file, line, ...)
 endfunction
 
 
-function s:GdbPaused.retry(...)
+function!  s:GdbPaused.retry(...)
   if self._server_exited
     return
   endif
@@ -86,15 +86,15 @@ endfunction
 """ Gdb backtrace
 """""""""""""""""""""""""""""""""""""""""""""""
 
-function s:neovim_backtrace_init(buffer)
+function! s:neovim_backtrace_init(buffer)
   set filetype=gdbTerminal
-  nnoremap <silent> <CR> :GdbGoToFrame<CR>
-  nnoremap <tab> :GdbGoToFrame<CR>j
-  nnoremap <S-tab> k:GdbGoToFrame<CR>
+  nnoremap <buffer><silent> <CR> :GdbGoToFrame<CR>
+  nnoremap <buffer><silent> <tab> :GdbGoToFrame<CR>j
+  nnoremap <buffer><silent> <S-tab> k:GdbGoToFrame<CR>
 endfunction
 
 
-function s:GdbPaused.neovim_backtrace(...)
+function! s:GdbPaused.neovim_backtrace(...)
   call g:reswin#Shell('cat ' . s:gdb_backtrace_qf, {'onComplete': function('<SID>neovim_backtrace_init')})
 endfunction
 
@@ -103,7 +103,7 @@ endfunction
 """ Gdb breakpoints
 """""""""""""""""""""""""""""""""""""""""""""""
 
-function s:neogdb_breakpoints_init(buffer)
+function! s:neogdb_breakpoints_init(buffer)
   nnoremap <buffer><silent> <CR> :call <SID>neogdb_breakpoints_goto(getline('.'))<CR>
   nnoremap <buffer><silent> r :call <SID>neogdb_breakpoints_refresh()<CR>
   nnoremap <buffer><silent> t :call <SID>neogdb_breakpoints_toggle(getline('.'))<CR>
@@ -204,7 +204,7 @@ function! s:neogdb_breakpoints_delete(line)
 endfunction
 
 
-function s:GdbPaused.neovim_breakpoints(...)
+function! s:GdbPaused.neovim_breakpoints(...)
   call g:reswin#Shell('cat ' . s:gdb_breakpoints_qf, {
     \   'keepFocus': v:false,
     \   'preservePosition': v:true,
@@ -224,7 +224,7 @@ let s:GdbRunning = vimexpect#State([
       \ ])
 
 
-function s:GdbRunning.pause(...)
+function! s:GdbRunning.pause(...)
   call self._parser.switch(s:GdbPaused)
   if !self._initialized
     call self.send('source ' . s:plugin_path . '/gdb/gdbinit')
@@ -239,7 +239,7 @@ function s:GdbRunning.pause(...)
 endfunction
 
 
-function s:GdbRunning.disconnected(...)
+function! s:GdbRunning.disconnected(...)
   if !self._server_exited && self._reconnect
     " Refresh to force a delete of all watchpoints
     call s:RefreshBreakpoints()
@@ -258,7 +258,7 @@ let s:Gdb = {}
 
 
 " Close gdb session
-function s:Gdb.kill()
+function! s:Gdb.kill()
   call self.update_current_line_sign(0)
 
   if bufexists(self._client_buf)
